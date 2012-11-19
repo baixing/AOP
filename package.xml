@@ -27,7 +27,7 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
   <email>gerald@php.net</email>
   <active>yes</active>
  </lead>
-   <date>2012-08-05</date>
+   <date>2012-10-11</date>
    <version>
     <release>0.2.0</release>
     <api>0.2.0</api>
@@ -38,7 +38,11 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
    </stability>
  <license uri="http://www.php.net/license">PHP License</license>
    <notes>
-    - Cache on Write Properties
+AopTriggeredJoinPoint was renamed AopJoinPoint
+AopJoinPoint->getTriggering* was renamed AopJoinPoint->get*
+Updated error messages to be more explicit
+lots of bug fixes
+performances improvements
    </notes>
 
  <contents>
@@ -54,7 +58,6 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
             <file role="doc"  name="README.md" />
             <file role="doc"  name="THANKS" />
             <dir name="tests">
-
                 <dir name="arguments_overload" >
                     <file role="test" name="001.phpt" />
                     <file role="test" name="002.phpt" />
@@ -67,6 +70,11 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
                     <file role="test" name="002.phpt" />
                     <file role="test" name="003.phpt" />
                     <file role="test" name="004.phpt" />
+              </dir>
+                <dir name="cache" >
+                    <file role="test" name="001.phpt" />
+                    <file role="test" name="002.phpt" />
+                    <file role="test" name="003.phpt" />
               </dir>
                 <dir name="complete" >
                     <file role="test" name="001.phpt" />
@@ -98,6 +106,10 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
                     <file role="test" name="19.phpt" />
                     <file role="test" name="1.phpt" />
                     <file role="test" name="21.phpt" />
+                    <file role="test" name="22.phpt" />
+                    <file role="test" name="23.phpt" />
+                    <file role="test" name="24.phpt" />
+                    <file role="test" name="25.phpt" />
                     <file role="test" name="2.phpt" />
                     <file role="test" name="3.phpt" />
                     <file role="test" name="4.phpt" />
@@ -125,6 +137,16 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
                     <file role="test" name="005.phpt" />
                     <file role="test" name="006.phpt" />
                     <file role="test" name="007.phpt" />
+              </dir>
+                <dir name="issues" >
+                    <file role="test" name="001.phpt" />
+                    <file role="test" name="002.phpt" />
+                    <file role="test" name="003.phpt" />
+                    <file role="test" name="004.phpt" />
+                    <file role="test" name="005.phpt" />
+                    <file role="test" name="006.phpt" />
+                    <file role="test" name="007.phpt" />
+                    <file role="test" name="008.phpt" />
               </dir>
                 <dir name="joker" >
                     <file role="test" name="001.phpt" />
@@ -154,6 +176,7 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
                     <file role="test" name="006.phpt" />
                     <file role="test" name="007.phpt" />
                     <file role="test" name="008.phpt" />
+                    <file role="test" name="009.phpt" />
               </dir>
                 <dir name="read_properties" >
                     <file role="test" name="001.phpt" />
@@ -186,7 +209,7 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
                     <file role="test" name="005.phpt" />
                     <file role="test" name="006.phpt" />
                     <file role="test" name="007.phpt" />
-             </dir>
+                </dir>
             </dir>
         </dir>
  </contents>
@@ -216,7 +239,6 @@ AOP aims to allow separation of cross-cutting concerns (cache, log, security, tr
    <notes>
        AOP In PHP
    </notes>
-
 </release>
 </changelog>
 </package>
