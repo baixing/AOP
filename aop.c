@@ -1846,14 +1846,6 @@ static int pointcut_match_zend_class_entry (pointcut *pc, zend_class_entry *ce) 
         }
     }
 #endif
-    ce = ce->parent;
-    while (ce != NULL) {
-        matches = pcre_exec(pc->re_class, NULL, ce->name, strlen(ce->name), 0, 0, NULL, 0);
-        if (matches >= 0) {
-            return 1;
-        }
-        ce = ce->parent;
-    }
     return 0;
 }
 
@@ -1893,11 +1885,7 @@ static int pointcut_match_zend_function (pointcut *pc, zend_function *curr_func,
         }
     }
     if (data != NULL) {
-        if (curr_func->common.fn_flags & ZEND_ACC_STATIC) {
-            ce = curr_func->common.scope;
-        } else if (data->object != NULL && Z_OBJCE(*data->object) != NULL) {
-            ce = Z_OBJCE(*data->object);
-        }
+        ce = curr_func->common.scope;
     }
     if (ce != NULL) {
         return pointcut_match_zend_class_entry(pc, ce);
