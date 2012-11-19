@@ -985,8 +985,6 @@ static void parse_pointcut (pointcut **pc) {
     char *strval;
     char *space;
     char *temp;
-    int strict_class = 0;
-
     (*pc)->method = NULL;
     (*pc)->class_name = NULL;
     (*pc)->scope = 0;
@@ -995,11 +993,6 @@ static void parse_pointcut (pointcut **pc) {
     (*pc)->class_jok = 0;
     strval = estrndup ((*pc)->selector, strlen((*pc)->selector)-2);
     php_strtolower(strval, strlen(strval));
-    if (strval[0] == '!') {
-        strict_class = 1;
-        strval ++;
-    }
-    
     (*pc)->scope = get_scope(strval);
     (*pc)->static_state = is_static(strval);
     space = strrchr(strval,' ');
@@ -1018,7 +1011,6 @@ static void parse_pointcut (pointcut **pc) {
         (*pc)->class_name = strval;
     }
     if ((*pc)->class_name != NULL) {
-        (*pc)->strict_class = strict_class;
         (*pc)->kind_of_advice = (*pc)->kind_of_advice|AOP_KIND_METHOD;
         (*pc)->class_jok = (strchr((*pc)->class_name, '*') != NULL);
     } else {
@@ -1678,15 +1670,13 @@ static int pointcut_match_zend_class_entry (pointcut *pc, zend_class_entry *ce) 
         }
     }
     #endif
-    if (!pc->strict_class) {
-        ce = ce->parent;
-        while (ce != NULL) {
-            matches = pcre_exec(pc->re_class, NULL, ce->name, strlen(ce->name), 0, 0, NULL, 0);
-            if (matches >= 0) {
-                return 1;
-            }
-            ce = ce->parent;
+    ce = ce->parent;
+    while (ce != NULL) {
+        matches = pcre_exec(pc->re_class, NULL, ce->name, strlen(ce->name), 0, 0, NULL, 0);
+        if (matches >= 0) {
+            return 1;
         }
+        ce = ce->parent;
     }
     return 0;
 }
@@ -1726,12 +1716,13 @@ static int pointcut_match_zend_function (pointcut *pc, zend_function *curr_func,
             return 0;
         }
     }
-
     if (data != NULL) {
-
+        if (curr_func->common.fn_flags & ZEND_ACC_STATIC) {
             ce = curr_func->common.scope;
+        } else if (data->object != NULL && Z_OBJCE(*data->object) != NULL) {
+            ce = Z_OBJCE(*data->object);
+        }
     }
-
     if (ce != NULL) {
         return pointcut_match_zend_class_entry(pc, ce);
     }

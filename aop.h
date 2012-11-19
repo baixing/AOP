@@ -88,7 +88,6 @@ typedef struct {
     int static_state;
     char *class_name;
     int class_jok;
-    int strict_class;
     char *method;
     int method_jok;
     char *selector;
