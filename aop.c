@@ -324,7 +324,7 @@ static void _test_func_pointcut_and_execute(HashPosition pos, HashTable *ht, zen
         if (ht==NULL) {
             aop_g(overloaded) = 0;
             execute_context (ex, object, scope, called_scope,args_overloaded, args, to_return_ptr_ptr);
-            aop_g(overloaded) = 1;
+            // aop_g(overloaded) = 1;
             return;
         }
         zend_hash_internal_pointer_reset_ex(ht, &pos);
@@ -335,7 +335,7 @@ static void _test_func_pointcut_and_execute(HashPosition pos, HashTable *ht, zen
     if (zend_hash_get_current_data_ex(aop_g(aop_functions), (void **)&temp, &pos) != SUCCESS) {
         aop_g(overloaded) = 0;
         execute_context (ex, object, scope, called_scope,args_overloaded, args, to_return_ptr_ptr);
-        aop_g(overloaded) = 1;
+        // aop_g(overloaded) = 1;
         return;
     }
 
@@ -407,7 +407,7 @@ static void test_func_pointcut_and_execute(int current_pointcut_index, zend_exec
     if (current_pointcut_index == aop_g(count_pcs)) {
         aop_g(overloaded) = 0;
         execute_context (ex, object, scope, called_scope,args_overloaded, args, to_return_ptr_ptr);
-        aop_g(overloaded) = 1;
+        // aop_g(overloaded) = 1;
         return;
     }
 
@@ -1404,7 +1404,7 @@ ZEND_DLEXPORT void aop_execute (zend_op_array *ops TSRMLS_DC) {
         EG(return_value_ptr_ptr) = emalloc(sizeof(zval *));
         *(EG(return_value_ptr_ptr)) = NULL;
     }
-    aop_g(overloaded) = 1;
+    // aop_g(overloaded) = 1;
     _test_func_pointcut_and_execute(NULL, NULL, EG(current_execute_data), EG(This), EG(scope),EG(called_scope), 0, NULL, EG(return_value_ptr_ptr));
     aop_g(overloaded) = 0;
     if (!must_return 
@@ -1468,7 +1468,7 @@ void aop_execute_internal (zend_execute_data *current_execute_data, struct _zend
 #else
     to_return_ptr_ptr = &(*(temp_variable *)((char *) current_execute_data->Ts + current_execute_data->opline->result.u.var)).var.ptr;
 #endif
-    aop_g(overloaded) = 1;
+    // aop_g(overloaded) = 1;
     _test_func_pointcut_and_execute(NULL,NULL, EG(current_execute_data), current_execute_data->object, EG(scope), EG(called_scope), 0, NULL, to_return_ptr_ptr);
     aop_g(overloaded) = 0;
     // SegFault
