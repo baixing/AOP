@@ -96,8 +96,6 @@ typedef struct {
     zend_fcall_info_cache fcic;
     pcre *re_method;
     pcre *re_class;
-    char *regexp_method;
-    char *regexp_class;
 } pointcut;
 
 
@@ -175,6 +173,7 @@ handled_ht **cache_write_properties;
 int cache_write_size;
 
 HashTable * aop_functions;
+zend_bool aop_enable;
 
 ZEND_END_MODULE_GLOBALS(aop)
 
@@ -187,6 +186,7 @@ ZEND_END_MODULE_GLOBALS(aop)
 PHP_MINIT_FUNCTION(aop);
 PHP_RINIT_FUNCTION(aop);
 PHP_RSHUTDOWN_FUNCTION(aop);
+PHP_MSHUTDOWN_FUNCTION(aop);
 
 PHP_FUNCTION(aop_add_around);
 PHP_FUNCTION(aop_get_previous_joinpoint);
@@ -223,6 +223,8 @@ static void (*_zend_execute_internal) (zend_execute_data *current_execute_data, 
 #endif
 static void add_pointcut (zend_fcall_info fci, zend_fcall_info_cache fcic, char *selector, int selector_len, int type, zval **return_value_ptr TSRMLS_DC);
 static void parse_pointcut (pointcut **pc);
+static void free_pointcut(void *);
+static void free_pointcut_cache (void *);
 ZEND_DLEXPORT void aop_execute (zend_op_array *ops TSRMLS_DC);
 #if ZEND_MODULE_API_NO < 20121113
 ZEND_DLEXPORT void aop_execute_internal (zend_execute_data *current_execute_data, int return_value_used TSRMLS_DC);
