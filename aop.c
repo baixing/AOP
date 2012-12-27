@@ -401,6 +401,7 @@ static void _test_func_pointcut_and_execute(HashPosition pos, HashTable *ht, zen
             }
         }
     }
+
     Z_DELREF_P(aop_object);
     return;
 }
@@ -829,7 +830,7 @@ PHP_MINIT_FUNCTION(aop)
     _zend_execute = zend_execute;
     zend_execute  = aop_execute;
     _zend_execute_internal = zend_execute_internal;
-    zend_execute_internal  = aop_execute_internal;
+    //zend_execute_internal  = aop_execute_internal;
 
     //Resources
     resource_pointcut = zend_register_list_destructors_ex(NULL, NULL, PHP_POINTCUT_RES_NAME, module_number);
@@ -1154,6 +1155,8 @@ void make_regexp_on_pointcut (pointcut **pc) {
             php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid expression");
         }
     }
+    efree(replace_count);
+    efree(new_length);
 }
 
 static void parse_pointcut (pointcut **pc) {
