@@ -2,7 +2,7 @@
 /+----------------------------------------------------------------------+
  | AOP                                                                  |
  +----------------------------------------------------------------------+
- | Copyright (c) 2012 Julien Salleyron, GÃ©rald CroÃ«s                    |
+ | Copyright (c) 2012 Julien Salleyron, G¨¦rald Cro?s                    |
  +----------------------------------------------------------------------+
  | This source file is subject to version 3.01 of the PHP license,      |
  | that is bundled with this package in the file LICENSE, and is        |
@@ -93,8 +93,6 @@ typedef struct {
     zend_fcall_info_cache fcic;
     pcre *re_method;
     pcre *re_class;
-    char *regexp_method;
-    char *regexp_class;
 } pointcut;
 
 typedef struct {
@@ -201,6 +199,7 @@ static void (*_zend_execute_internal) (zend_execute_data *current_execute_data, 
 #endif
 static void add_pointcut (zend_fcall_info fci, zend_fcall_info_cache fcic, char *selector, int selector_len, int type, zval **return_value_ptr TSRMLS_DC);
 static void free_pointcut(void *);
+static void free_pointcut_cache (void *);
 ZEND_DLEXPORT void aop_execute (zend_op_array *ops TSRMLS_DC);
 #if ZEND_MODULE_API_NO < 20121113
 ZEND_DLEXPORT void aop_execute_internal (zend_execute_data *current_execute_data, int return_value_used TSRMLS_DC);
