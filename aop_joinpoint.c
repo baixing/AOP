@@ -145,6 +145,7 @@ PHP_METHOD(AopJoinpoint, setReturnedValue){
     
     obj->value = ret;
     Z_ADDREF_P(ret);
+	Z_ADDREF_P(ret);
     RETURN_NULL();
 }
 
